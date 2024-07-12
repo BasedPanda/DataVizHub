@@ -31,5 +31,5 @@ jobs:
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          scp -r ./build/* user@your-server:/path/to/deploy
+          scp -r ./build/* aaravsingh@10.192.166.106:/path/to/deploy
 
