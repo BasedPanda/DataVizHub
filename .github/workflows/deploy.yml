@@ -1,4 +1,4 @@
-name: Deploy to Server
+name: Deploy to GitHub Pages
 
 on:
   push:
@@ -10,26 +10,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: webfactory/ssh-agent@v0.5.4
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Set up Node.js (if needed)
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
 
-      - name: Install dependencies
-        run: npm install
+    - name: Install dependencies (if any)
+      run: npm install || echo "No dependencies to install"
 
-      - name: Build the project
-        run: npm run build
+    - name: Build project (if necessary)
+      run: npm run build || echo "No build script"
 
-      - name: Deploy to Server
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          scp -r ./build/* aaravsingh@10.192.166.106:/var/www/html
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        publish_branch: gh-pages
+        publish_dir: .
 
