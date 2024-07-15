@@ -12,9 +12,12 @@ jobs:
 
     steps:
     - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up SSH
       uses: webfactory/ssh-agent@v0.5.4
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        ssh-private-key: ${{ secrets.DATAVIZHUBKEY }}
 
     - name: Set up Node.js
       uses: actions/setup-node@v3
@@ -30,7 +33,7 @@ jobs:
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        deploy_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        deploy_key: ${{ secrets.DATAVIZHUBKEY }}
         publish_branch: gh-pages
         publish_dir: .
 
