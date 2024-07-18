@@ -10,6 +10,9 @@
     <div class="header">
         <div class="logo">Data Viz Hub</div>
         <input type="text" id="search-input" placeholder="Search videos...">
+        <button id="login-button">Login</button>
+        <button id="register-button">Register</button>
+        <button id="logout-button" style="display:none;">Logout</button>
     </div>
     <div class="main-container">
         <div class="sidebar">
@@ -42,7 +45,26 @@
             </div>
         </div>
     </div>
+    <!-- Modal for Login -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-login">&times;</span>
+            <h2>Login</h2>
+            <input type="text" id="login-email" placeholder="Email">
+            <input type="password" id="login-password" placeholder="Password">
+            <button id="login-submit">Login</button>
+        </div>
+    </div>
+    <!-- Modal for Registration -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-register">&times;</span>
+            <h2>Register</h2>
+            <input type="text" id="register-email" placeholder="Email">
+            <input type="password" id="register-password" placeholder="Password">
+            <button id="register-submit">Register</button>
+        </div>
+    </div>
     <script src="scripts.js"></script>
 </body>
 </html>
-
