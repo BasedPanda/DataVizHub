@@ -174,26 +174,50 @@ body {
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
+    margin: 5% auto; /* 5% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 800px; /* Maximum width for the modal */
+    box-sizing: border-box;
 }
 
-.close {
+.modal-content video {
+    width: 100%;
+    height: auto;
+    max-height: 80vh; /* Ensure the video doesn't exceed the viewport height */
+}
+
+.close, .close-login, .close-register {
     color: #aaa;
     float: right;
     font-size: 28px;
     font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
+.close:hover, .close:focus, .close-login:hover, .close-login:focus, .close-register:hover, .close-register:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
 }
 
-#video-info {
-    margin-top: 10px;
+/* Modal input fields */
+.modal-content input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    box-sizing: border-box;
+}
+
+.modal-content button {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.modal-content button:hover {
+    background-color: #e64a19;
 }

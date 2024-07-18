@@ -12,6 +12,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const videoTitle = document.getElementById('video-title');
     const videoDescription = document.getElementById('video-description');
 
+    const loginButton = document.getElementById('login-button');
+    const registerButton = document.getElementById('register-button');
+    const logoutButton = document.getElementById('logout-button');
+    const loginModal = document.getElementById('login-modal');
+    const registerModal = document.getElementById('register-modal');
+    const closeLogin = document.querySelector('.close-login');
+    const closeRegister = document.querySelector('.close-register');
+    const loginSubmit = document.getElementById('login-submit');
+    const registerSubmit = document.getElementById('register-submit');
+    const loginEmail = document.getElementById('login-email');
+    const loginPassword = document.getElementById('login-password');
+    const registerEmail = document.getElementById('register-email');
+    const registerPassword = document.getElementById('register-password');
+
+    let userToken = null;
+
     function fetchData() {
         loadingIndicator.style.display = 'block';
         fetch(apiEndpoint, {
@@ -95,6 +111,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 title.textContent = item.filename;
                 galleryItem.appendChild(title);
 
+                if (userToken) {
+                    const downloadButton = document.createElement('button');
+                    downloadButton.textContent = 'Download';
+                    downloadButton.addEventListener('click', () => {
+                        window.open(fileUrl, '_blank');
+                    });
+                    galleryItem.appendChild(downloadButton);
+                }
+
                 gallery.appendChild(galleryItem);
 
                 galleryItem.addEventListener('click', () => {
@@ -139,6 +164,80 @@ document.addEventListener('DOMContentLoaded', function() {
                 item.style.display = 'none';
             }
         });
+    });
+
+    loginButton.addEventListener('click', function() {
+        loginModal.style.display = 'block';
+    });
+
+    registerButton.addEventListener('click', function() {
+        registerModal.style.display = 'block';
+    });
+
+    closeLogin.onclick = function() {
+        loginModal.style.display = 'none';
+    }
+
+    closeRegister.onclick = function() {
+        registerModal.style.display = 'none';
+    }
+
+    loginSubmit.addEventListener('click', function() {
+        const email = loginEmail.value;
+        const password = loginPassword.value;
+
+        fetch('/api/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.token) {
+                userToken = data.token;
+                loginModal.style.display = 'none';
+                loginButton.style.display = 'none';
+                registerButton.style.display = 'none';
+                logoutButton.style.display = 'block';
+                fetchData();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    registerSubmit.addEventListener('click', function() {
+        const email = registerEmail.value;
+        const password = registerPassword.value;
+
+        fetch('/api/users/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, password })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'User registered successfully') {
+                registerModal.style.display = 'none';
+                alert('Registration successful. Please login.');
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    logoutButton.addEventListener('click', function() {
+        userToken = null;
+        logoutButton.style.display = 'none';
+        loginButton.style.display = 'block';
+        registerButton.style.display = 'block';
+        fetchData();
     });
 
     fetchData();
